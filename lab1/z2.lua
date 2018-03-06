@@ -1,14 +1,14 @@
 require("lab1.z1")
 
-function map(tab, func)
-  mapped = {}
+local function map(tab, func)
+  local mapped = {}
   for i=1,#tab do
     mapped[i] = func(tab[i])
   end
   return mapped
 end
 
-function add1 (x)
+local function add1 (x)
   return x+1
 end
 

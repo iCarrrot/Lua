@@ -20,3 +20,4 @@ string.strip = function(text, w)
 end
 
 print(string.strip(str, 'tng'))
+

@@ -2,7 +2,7 @@ require("lab1.z1")
 
 
 
-local path = 'K:\\hidden-name\\Teaching\\2016_Lua\\[Lab]\\Lecture 04.pdf'
+local path = 'K:\\hidden-name\\Teaching\\2016_Lua\\[Lab]\\Lecture .04.pdf'
 
 function unpath(path, iftest)
   local sep = package.config:sub(1,1)

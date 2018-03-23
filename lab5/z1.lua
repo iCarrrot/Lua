@@ -18,5 +18,6 @@ end
 for x in chain({},{},{},{'a', 'b', 'c'}, {40, 50}, {}, {6, 7}) do
   print(x)
 end
+
 print(chain({'a', 'b', 'c'}, {40, 50}, {}, {6, 7}))
 print(chain({1,2,3,5,6,7}, {2,5,5,4,7}))

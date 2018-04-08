@@ -1,10 +1,10 @@
 require("lab1.z1")
 
 function zip(...)
-  tab = {...}
+  local tab = {...}
   return function(state)
-    ret = {}
-    for k, tab in pairs(state) do
+    local ret = {}
+    for k, tab in ipairs(state) do
       if #tab == 0 then
         return nil
       end

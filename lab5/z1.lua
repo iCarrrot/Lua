@@ -2,7 +2,7 @@ require("lab1.z1")
 
 
 function chain(...)
-  tab = {...}
+  local tab = {...}
   return function(state)
     if #state == 1 and #state[1] == 0 then
       return nil
@@ -10,7 +10,7 @@ function chain(...)
     while next(state[1]) == nil do
       table.remove(state,1)
     end
-    a = table.remove(state[1],1)
+    local a = table.remove(state[1],1)
     return a
   end, tab
 end

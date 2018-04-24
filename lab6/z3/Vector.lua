@@ -93,7 +93,7 @@ function mt.__tostring(v)
   for i = 1, v.dim do
     new[i] = v[i]
   end
-  return "["..table.concat(new,", ")..']'
+  return "["..table.concat(v,", ")..']'
 end
 
 function mt.__concat(a1, a2)

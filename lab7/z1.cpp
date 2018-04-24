@@ -1,9 +1,8 @@
-#include <stdio.h>
-#include <string.h>
-#include <lua.hpp>
 #include <iostream>
+#include <lua.hpp>
 
 using namespace std;
+
 static void stackDump(lua_State *L)
 {
     int top = lua_gettop(L);

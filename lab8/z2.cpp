@@ -7,34 +7,34 @@
 
 using namespace std;
 
-static void stackDump(lua_State *L)
-{
-    int top = lua_gettop(L);
-    cout << "\n<--------- Stos Lua --------->\n";
-    for (int i = top; i > 0; i--) // odwiedzamy elementy od dołu
-    {
-        int t = lua_type(L, i);
-        cout << "index: " << i << ", type: " << lua_typename(L, t) << ", value: ";
-        switch (t)
-        {
-        case LUA_TSTRING: // napis
-            cout << lua_tostring(L, i);
-            break;
-        case LUA_TBOOLEAN: // wartość logiczna
-            cout << (lua_toboolean(L, i) ? "true" : "false");
-            break;
-        case LUA_TNUMBER:            // liczby
-            cout << lua_tonumber(L, i) << '\n';
-            break;
-        default:                              // pozostałe
-            cout << lua_typename(L, t); // drukuje nazwę typu
-            break;
-        }
-        cout << "\n"; // separator
-    }
-    cout << "<------- Koniec stosu ------->\n";
+// static void stackDump(lua_State *L)
+// {
+//     int top = lua_gettop(L);
+//     cout << "\n<--------- Stos Lua --------->\n";
+//     for (int i = top; i > 0; i--) // odwiedzamy elementy od dołu
+//     {
+//         int t = lua_type(L, i);
+//         cout << "index: " << i << ", type: " << lua_typename(L, t) << ", value: ";
+//         switch (t)
+//         {
+//         case LUA_TSTRING: // napis
+//             cout << lua_tostring(L, i);
+//             break;
+//         case LUA_TBOOLEAN: // wartość logiczna
+//             cout << (lua_toboolean(L, i) ? "true" : "false");
+//             break;
+//         case LUA_TNUMBER:            // liczby
+//             cout << lua_tonumber(L, i) << '\n';
+//             break;
+//         default:                              // pozostałe
+//             cout << lua_typename(L, t); // drukuje nazwę typu
+//             break;
+//         }
+//         cout << "\n"; // separator
+//     }
+//     cout << "<------- Koniec stosu ------->\n";
     
-}
+// }
 
 void error(lua_State *L, const char *fmt, ...)
 {
@@ -91,6 +91,7 @@ float getstep(lua_State *L)
     
     if (lua_getfield(L, -1, "step") != LUA_TNUMBER){
         // error(L, "!invalid color component '%s'", "step");
+        lua_pop(L, 1);
         return 1;
     }
         
@@ -132,7 +133,7 @@ int main(void)
     lua_getglobal(L, "TOPLOT");
     if (!lua_istable(L, -1))
         error(L, "'TOPLOT' is not a table");
-    stackDump(L);
+    // stackDump(L);
     int maxx = getmaxx(L);
     int minx = getminx(L);
     float step = getstep(L);

@@ -1,27 +1,25 @@
-Dot  = require "dot"
-
+Dot = require "dot"
 
 local Player = Dot:extend()
 
-function Player:new(x,y,restit)
-  Player.super.new(self,x,y)
-  self.fixture:setRestitution(restit)  
-  self.fixture:setUserData({typeF="player"})
-  
+function Player:new(x, y, restit)
+  Player.super.new(self, x, y)
+  self.fixture:setRestitution(restit)
+  self.fixture:setUserData({typeF = "player"})
 
 end
 
 function Player:update()
   --here we are going to create some keyboard events
-  
+
   if love.keyboard.isDown("right") then --press the right arrow key to push the ball to the right
     self.fixture:getBody():applyForce(100, 0)
   elseif love.keyboard.isDown("left") then --press the left arrow key to push the ball to the left
     self.fixture:getBody():applyForce(-100, 0)
   elseif love.keyboard.isDown("up") then --press the left arrow key to push the ball to the left
-    self.fixture:getBody():applyForce(0,-100)
+    self.fixture:getBody():applyForce(0, -100)
   elseif love.keyboard.isDown("down") then --press the left arrow key to push the ball to the left
-    self.fixture:getBody():applyForce(0,100)
+    self.fixture:getBody():applyForce(0, 100)
   --[[
   elseif love.keyboard.isDown("up") then --press the up arrow key to set the ball in the air
     objects.ball.body:setPosition(650/2, 650/2)
@@ -31,7 +29,6 @@ function Player:update()
     self.fixture:getBody():setAwake(false)
   --]]
   end
-  
 end
 
 return Player

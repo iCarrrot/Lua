@@ -35,9 +35,4 @@ function Shot:update(dt)
   self.body:setX(newX)
 end
 
---function Shot:draw()
---  love.graphics.setColor(self.color)
---  love.graphics.circle("fill", self.body:getX(), self.body:getY(), self.shape:getRadius())
---end
-
 return Shot

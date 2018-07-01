@@ -1,0 +1,56 @@
+\documentclass{article}
+    \usepackage[utf8]{inputenc}
+    \usepackage{polski}
+    \usepackage[polish]{babel}
+    \usepackage{bbm}
+    \usepackage{graphicx}    
+    \usepackage{caption}
+    \usepackage{subcaption}
+    \usepackage{epstopdf}
+    \usepackage{amsmath}
+    \usepackage{amsthm}
+    \usepackage{hyperref}
+    \usepackage{url}
+    \usepackage{comment}
+    \newtheorem{defi}{Definicja}
+    \newtheorem{twr}{Twierdzenie}
+    \usepackage{listings}
+    \usepackage{float}
+    
+    
+    \author{Michał Martusewicz 282023}
+    \date{Wrocław, \today}
+    \title{\textbf{"Lata i strzela"}  \\ Dokumentacja}
+    
+    \begin{document}
+    \maketitle
+    \section{Strona użytkowa}
+    Projekt to prosta gra zręcznościowa. Zadaniem gracza jest zestrzelenie jak największej liczby przeciwników. Gracz porusza statkiem, będącym czerwoną kropką. W grze są pewne utrudnienia: jest grawitacja (czyli przeciwnicy spadają coraz szybciej) oraz kolory. Przeciwnika danego koloru można zestrzelić wyłącznie strzałem o tym samym kolorze. Gra kończy się, gdy któryś z przeciwników dotknie dolnej części planszy. Przeciwnicy są różnej wielkości. Punkty przyznawane są następująco: 1 punkt za każde trafienie przeciwnika i 5 za ostateczne jego zniszczenie. Po każdym trafieniu przeciwnik się zmniejsza, po ostatnim znika zupełnie.
+    Kolejnym utrudnieniem jest ograniczenie ilości amunicja jaka może być w jednym czasie na planszy.
+    Dodatkowo z pewnym prawdopodobieństwem pojawiają się bonusy:
+    \begin{itemize}
+    \item tripple shot - potrójny strzał - przez pewien czas użytkownik strzela w trzech kierunkach jednocześnie;
+    \item infinity ammo - nieskończona amunicja - przez pewien czas gracz może wystrzelić dowolnie wiele amunicji;
+    \item red shot - czerwony strzał - strzał tego kolory może niszczyć przeciwników wszystkich kolorów;
+    \item reversed grav - odwrócona grawitacja - przeciwnicy przestają spadać;
+    \item less enemys - mniej przeciwników - pojawia się dwa razy mniej przeciwników.
+    \end{itemize}
+    Aby zdobyć bonus, należy go dotknąć swoim statkiem.
+    \section{Strona techniczna}
+    Projekt zawiera klasę dot, po której dziedziczą wszystkie klasy wszystkich obiektów: bonus, enemy, player i shot. Głównymi metodami tych klas to new, update i draw, które definiują tworzenie obiektów, ich aktualizację i rysowanie. Do tego jest klasa box, która odpowiada za stworzenie ścian dookoła planszy.
+    \section{Uruchamianie + wykorzystanie}
+    Aby uruchomić grę, należy wpisać polecenie 
+    \begin{lstlisting}
+    love path
+    \end{lstlisting}
+    gdzie path to ścieżka do folderu gry.
+    Po uruchomieniu polecenia ukaże się okienko z grą. Aby rozpocząć grę należy nacisnąć dowolny klawisz alfanumeryczny. W czasie gry można wcisnąć klawisz "h" - ukaże się tekst pomocy. Klawisz "Esc" zamyka okno z grą. 
+    Sterowanie w czasie gry: 
+    \begin{itemize}
+    \item Strzałki - poruszanie statkiem
+    \item z, x, c, v - zmiana koloru strzału na odpowiednio: pomarańczowy, zielony, niebieski, fioletowy.
+    \item spacja - strzał
+    \end{itemize}
+    
+    
+    \end{document}

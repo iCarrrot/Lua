@@ -9,14 +9,13 @@ kolorki = {
 kolorki.red = {221 / 255, 0 / 255, 17 / 255}
 kolorki.orange = {241 / 255, 114 / 255, 23 / 255}
 kolorki.yellow = {240 / 255, 210 / 255, 20 / 255}
-kolorki.green = {128 / 255, 218 / 255, 54 / 255}
+kolorki.green = {128 / 400, 218 / 400, 54 / 400}
 kolorki.blue = {35 / 255, 116 / 255, 254 / 255}
 kolorki.purple = {217 / 255, 43 / 255, 187 / 255}
 kolorki.white = {1.0, 1.0, 1.0}
 Shot = require "shot"
 Player = require "player"
 Enemy = require "enemy"
---Dot = require "dot"
 Box = require "box"
 Bonus = require "bonus"
 
@@ -25,99 +24,96 @@ function love.load()
 end
 
 function love.draw()
-    if gameStarted then
-        --love.graphics.draw(text)
-        love.graphics.setBackgroundColor(1, 1, 1)
-        --  love.graphics.polygon("fill", objects.block2.body:getWorldPoints(objects.block2.shape:getPoints()))
-        box:draw()
-        objects.player:draw(kolorki.red)
+    if not help then
+        if gameStarted then
+            love.graphics.setBackgroundColor(1, 1, 1)
+            box:draw()
+            objects.player:draw(kolorki.red)
 
-        for i = 1, #enemys do
-            enemys[i]:draw()
+            for i = 1, #enemys do
+                enemys[i]:draw()
+            end
+            bonus:draw()
+            for i = 1, #shots do
+                shots[i]:draw()
+            end
+
+            love.graphics.setColor(kolorki[shotColor])
+
+            shotsString = "" .. (currentShotNo - #shots)
+            shotsText = love.graphics.newText(font40, shotsString)
+            shotsText:setf(shotsString, width, "right")
+            love.graphics.draw(shotsText)
+
+            love.graphics.draw(love.graphics.newText(font40, "" .. score), 0)
+        elseif startTextDeley > 0.5 then
+            love.graphics.setColor(255, 255, 255)
+            startGameText1 = love.graphics.newText(font40, 'Welcome to "Lata i strzela"!')
+            love.graphics.draw(
+                startGameText1,
+                math.floor(width / 2 - startGameText1:getWidth() / 2),
+                math.floor(height / 2 - startGameText1:getHeight() / 2)
+            )
+            startGameText2 = love.graphics.newText(font20, "Press anykey to start")
+            love.graphics.draw(
+                startGameText2,
+                math.floor(width / 2 - startGameText2:getWidth() / 2),
+                math.floor(height / 2 - startGameText2:getHeight() / 2 + startGameText1:getHeight())
+            )
+
+            legendDraw()
+        else
+            love.graphics.setColor(255, 255, 255)
+            startGameText1 = love.graphics.newText(font40, 'Welcome to "Lata i strzela"!')
+            love.graphics.draw(
+                startGameText1,
+                math.floor(width / 2 - startGameText1:getWidth() / 2),
+                math.floor(height / 2 - startGameText1:getHeight() / 2)
+            )
+            startGameText2 = love.graphics.newText(font20, "Press anykey to start")
+            legendDraw()
         end
 
-        bonus:draw()
-        -- print(bonus.fixture:getBody():getY())
+        if gameOver then
+            love.graphics.setColor(255, 0, 0)
+            scoreText = love.graphics.newText(font60, "" .. score)
+            love.graphics.draw(
+                scoreText,
+                math.floor(width / 2 - scoreText:getWidth() / 2),
+                math.floor(height / 2 - scoreText:getHeight() / 2)
+            )
 
-        for i = 1, #shots do
-            shots[i]:draw()
+            gameOverText = love.graphics.newText(font60, "GAME OVER!")
+            love.graphics.draw(
+                gameOverText,
+                math.floor(width / 2 - gameOverText:getWidth() / 2),
+                math.floor(height / 2 - gameOverText:getHeight() / 2 - scoreText:getHeight())
+            )
         end
-
-        love.graphics.setColor(kolorki[shotColor])
-
-        shotsString = "" .. (currentShotNo - #shots)
-        shotsText = love.graphics.newText(font40, shotsString)
-        shotsText:setf(shotsString, width, "right")
-        love.graphics.draw(shotsText)
-
-        love.graphics.draw(love.graphics.newText(font40, "" .. score), 0)
-    elseif startTextDeley > 0.5 then
-        love.graphics.setColor(255, 255, 255)
-        startGameText1 = love.graphics.newText(font40, 'Welcome to "Lata i strzela"!')
-        love.graphics.draw(
-            startGameText1,
-            math.floor(width / 2 - startGameText1:getWidth() / 2),
-            math.floor(height / 2 - startGameText1:getHeight() / 2)
-        )
-        startGameText2 = love.graphics.newText(font20, "Press anykey to start")
-        love.graphics.draw(
-            startGameText2,
-            math.floor(width / 2 - startGameText2:getWidth() / 2),
-            math.floor(height / 2 - startGameText2:getHeight() / 2 + startGameText1:getHeight())
-        )
-
-        legendDraw()
+        if gameOver and startTextDeley > 0.5 then
+            gameOverText2 = love.graphics.newText(font20, "Press anykey to restart")
+            love.graphics.draw(
+                gameOverText2,
+                math.floor(width / 2 - gameOverText2:getWidth() / 2),
+                math.floor(height / 2 - gameOverText2:getHeight() / 2 + gameOverText:getHeight())
+            )
+        end
     else
-        love.graphics.setColor(255, 255, 255)
-        startGameText1 = love.graphics.newText(font40, 'Welcome to "Lata i strzela"!')
-        love.graphics.draw(
-            startGameText1,
-            math.floor(width / 2 - startGameText1:getWidth() / 2),
-            math.floor(height / 2 - startGameText1:getHeight() / 2)
-        )
-        startGameText2 = love.graphics.newText(font20, "Press anykey to start")
-        legendDraw()
-    end
+        helpDraw()
 
-    if gameOver then
-        love.graphics.setColor(255, 0, 0)
-        scoreText = love.graphics.newText(font60, "" .. score)
-        love.graphics.draw(
-            scoreText,
-            math.floor(width / 2 - scoreText:getWidth() / 2),
-            math.floor(height / 2 - scoreText:getHeight() / 2)
-        )
-
-        gameOverText = love.graphics.newText(font60, "GAME OVER!")
-        love.graphics.draw(
-            gameOverText,
-            math.floor(width / 2 - gameOverText:getWidth() / 2),
-            math.floor(height / 2 - gameOverText:getHeight() / 2 - scoreText:getHeight())
-        )
     end
-    if gameOver and startTextDeley > 0.5 then
-        gameOverText2 = love.graphics.newText(font20, "Press anykey to restart")
-        love.graphics.draw(
-            gameOverText2,
-            math.floor(width / 2 - gameOverText2:getWidth() / 2),
-            math.floor(height / 2 - gameOverText2:getHeight() / 2 + gameOverText:getHeight())
-        )
-    end
-
-    --]]
 end
 
 function love.update(dt)
     width, height = love.graphics.getDimensions()
+
     startTextDeley = (startTextDeley + dt > 1 and 0) or startTextDeley + dt
-    if not gameOver and gameStarted then
+    if not gameOver and gameStarted and not help then
         world:update(dt) --this puts the world into motion
 
         newBonus = math.random(0, 1000)
-        if not activeBonus and math.random(0, 1000) > 1000 - 2 then
+        if not activeBonus and newBonus > 1000 - 2 and not bonus.onScreen then
             bonus = Bonus(true)
-        else
-            -- print (newBonus)
         end
 
         shotDelay = shotDelay + dt / 10
@@ -179,25 +175,21 @@ function love.update(dt)
         local temp2 = {}
         for i = 1, #enemys do
             enemys[i]:update(dt, level)
-            --      if not enemys[i]:isOut() then
-            --        temp2[#temp2+1]=enemys[i]
-            --      end
+                 if not enemys[i].fixture:isDestroyed() then
+                   temp2[#temp2+1]=enemys[i]
+                 end
         end
-        --    enemys = temp2
+           enemys = temp2
 
         local temp = {}
         for i = 1, #shots do
-            -- print(#shots)
             shots[i]:update(dt)
             if not shots[i].fixture:isDestroyed() then
                 temp[#temp + 1] = shots[i]
-            elseif not shots[i].fixture:isDestroyed() then
-                shots[i].fixture:destroy()
             end
         end
         shots = temp
     else
-        --love.graphics.clear()
         love.graphics.setColor(255, 0, 0)
         love.graphics.print("GAME OVER!", width / 2 - 50, height / 2 - 50, 0, 5, 5)
     end
@@ -205,11 +197,6 @@ end
 
 function love.keypressed(key)
     if key == "escape" then
-        --  elseif key == "space" then
-        --    shots[#shots + 1] = Shot(objects.player.body:getX(), objects.player.body:getY()-5, shotColor,kolorki)
-        --    rSize = shots[#shots].shape:getRadius()
-        --    shots[#shots + 1] = Shot(objects.player.body:getX(), objects.player.body:getY() -5- 2 * rSize, shotColor,kolorki)
-        --    shots[#shots + 1] = Shot(objects.player.body:getX(), objects.player.body:getY() - 5-4 * rSize, shotColor,kolorki)
         love.event.quit()
     elseif key == "z" then
         shotColor = 1
@@ -219,10 +206,14 @@ function love.keypressed(key)
         shotColor = 3
     elseif key == "v" then
         shotColor = 4
+    elseif key == "h" then
+        help = true
     elseif key and not gameStarted then
         gameStarted = true
     elseif key and gameOver then
         newGame(true)
+    elseif key and help then
+        help = false
     end
 end
 
@@ -258,7 +249,7 @@ function beginContact(f1, f2, contact)
             shotF:destroy()
         elseif enemyF and groundF and contact:isTouching() then
             gameOver = true
-        elseif bonusF and (shotF or playerF) then
+        elseif bonusF and playerF then
             if contact:isTouching() then
                 local bonusType = bonusF:getUserData().bonusType
                 activeBonus = bonusType
@@ -284,6 +275,7 @@ function newGame(ifStarted)
     font60 = love.graphics.newFont("neuropol_x_rg.ttf", 60)
     font40 = love.graphics.newFont("neuropol_x_rg.ttf", 40)
     font20 = love.graphics.newFont("neuropol_x_rg.ttf", 20)
+    font15 = love.graphics.newFont("neuropol_x_rg.ttf", 15)
     math.randomseed(os.time())
     love.window.setMode(800, 600, {resizable = true, vsync = true, minwidth = 400, minheight = 300})
     love.physics.setMeter(64) --the height of a meter our worlds will be 64px
@@ -302,12 +294,12 @@ function newGame(ifStarted)
     lastColor = shotColor
     activeBonus = nil
     harder = 0
+    help = false
 
     objects = {}
     shots = {}
     enemys = {}
     bonus = Bonus(false)
-    -- bonus.destroy()
 
     width, height = love.graphics.getDimensions()
     x, y = math.floor(width / 2), height - 10
@@ -333,6 +325,38 @@ function legendDraw()
     love.graphics.setColor(255, 255, 255)
     legendText5 = love.graphics.newText(font20, "space to shot")
     textHeigh = textHeigh + legendText1:getHeight() * 1.5 - legendText5:getHeight() / 2
-
     love.graphics.draw(legendText5, math.floor(width / 2 - legendText5:getWidth() / 2), math.floor(textHeigh))
+
+    legendText6 = love.graphics.newText(font20, "press h for help")
+    textHeigh = textHeigh  + legendText5:getHeight() *1.5 - legendText6:getHeight() / 2 + 20
+    love.graphics.draw(legendText6, math.floor(width / 2 - legendText6:getWidth() / 2), math.floor(textHeigh))
+end
+function helpDraw()
+    textHeigh = 400
+    love.graphics.setBackgroundColor({0,0,0})
+    love.graphics.setColor(kolorki.white)
+    helpText1 = love.graphics.newText(font40, "Pomoc")
+    helpText2 = love.graphics.newText(font15, "")
+    helpText2:addf("\n\n\nTwoim zadaniem jest zestrzelenie jak największej liczby przeciwników.\n\n"..
+    "Przeciwnika możesz zestrzelić tylko jego własnym kolorem.\n\n"..
+    "Wybierz z, x, c, v aby wybrać odpowiednio kolor: pomarańczowy, zielony, niebieski i fioletowy.\n\n"..
+    "Naciśnij spację, aby strzelić", 700, "left")
+
+    helpText3 = love.graphics.newText(font40, "Bonusy")
+    helpText4 = love.graphics.newText(font15, "")
+    helpText4:addf("\n\n\ntripple shot - potrójny strzał"..
+    "\n\ninfinity ammo - nieskończona amunicja"..
+    "\n\nred shot - strzał czerwony, zabija wszystkich przeciwników"..
+    "\n\nreversed  grav - odwrócona grawitacja"..
+    "\n\nless enemys - pojawia się dwa razy mniej przeciwników", 700, "left")
+
+    helpText5 = love.graphics.newText(font20, "Naciśnij dowolny klawisz aby wrócić do gry")
+    
+    
+    love.graphics.draw(helpText1,30,30)
+    love.graphics.draw(helpText2,30,30)
+    love.graphics.draw(helpText3,30,260)
+    love.graphics.draw(helpText4,30,260)
+    love.graphics.draw(helpText5,30,550)
+    love.graphics.setColor(kolorki.green)
 end

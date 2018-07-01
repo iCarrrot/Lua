@@ -52,7 +52,6 @@ function Bonus:draw()
         else
             activeBonus = nil
         end
-    -- print(width, bonusText:getWidth() )
     end
 end
 function Bonus:update(dt)
@@ -60,11 +59,6 @@ function Bonus:update(dt)
         self.timeLeft =
             (self.timeLeft - 0.0165 / times[self.typeNo] > 0 and self.timeLeft - 0.0165 / times[self.typeNo]) or 0
         endTime = love.timer.getTime()
-
-        -- print(self.timeLeft, dt)
-        if self.timeLeft == 0 then
-        -- print(endTime - startTime)
-        end
     end
 end
 

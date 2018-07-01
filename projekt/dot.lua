@@ -24,8 +24,6 @@ function Dot:draw(color)
       local scale = self.scale or 0.1
       local secColor = self.secColor or {1,1,1}
       love.graphics.setColor(secColor) 
-      -- love.graphics.circle(self.picture, self.fixture:getBody():getX(), y, self.fixture:getShape():getRadius())
-      -- love.graphics.draw(self.image, self.fixture:getBody():getX(), y, self.fixture:getBody():getAngle(),  1, 1, self.image:getWidth()/2, self.image:getHeight()/2)
       love.graphics.draw(self.image, x, y, nil,  scale, scale, self.image:getWidth()/2, self.image:getHeight()/2)
       
     end
@@ -53,13 +51,5 @@ function Dot:isOut()
   return false
 end
 
---function Dot:isTouched(anotherDot)
---  local distance = (self.body:getX() -anotherDot.x)^2 + (self.body:getY() +anotherDot.y)^2
---  if distance <= (self.r+anotherDot.r)^2 then
---    return true
---  end
-
---  return false
---end
 
 return Dot
